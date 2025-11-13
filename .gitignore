@@ -30,8 +30,11 @@ frontend/.env.*
 *.env.staging
 
 # API Keys and Secrets - NEVER COMMIT THESE
+# Note: Be careful with wildcards - these patterns protect common secret file names
 *secret*
-*key*
+*secret.*
+*api*key*
+*api*secret*
 *password*
 *token*
 *credential*
@@ -40,6 +43,11 @@ frontend/.env.*
 *.cert
 *.p12
 *.pfx
+# But allow legitimate files (these are exceptions)
+!package.json
+!package-lock.json
+!pnpm-lock.yaml
+!yarn.lock
 
 # IDE
 .vscode/

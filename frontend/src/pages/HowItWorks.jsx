@@ -548,7 +548,7 @@ export default function HowItWorks() {
         <span style={{ color: 'var(--text-muted)' }}>
           For complete technical documentation, see{' '}
           <a 
-            href="https://github.com/yourname/ai-stock-insights/blob/main/ARCHITECTURE.md" 
+            href="https://github.com/girish2408/ai-stock-insights/blob/main/ARCHITECTURE.md" 
             target="_blank" 
             rel="noreferrer"
             style={{ color: 'var(--accent-primary)' }}

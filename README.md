@@ -2,6 +2,14 @@
 
 Full-stack dashboard that aggregates US equity intelligence in one place: upcoming earnings, SEC filings, analyst sentiment, recent performance, and curated news with optional AI summaries.
 
+## 🔒 Security Notice
+
+**This is a public repository. Never commit API keys, secrets, or `.env` files.**
+
+- See [SECURITY.md](./SECURITY.md) for security guidelines
+- All API keys must be set via environment variables
+- Use `backend/env.sample` as a template (never commit actual `.env` files)
+
 ## 📚 Architecture Documentation
 
 **For detailed architecture documentation**, see [`ARCHITECTURE.md`](./ARCHITECTURE.md) which includes:

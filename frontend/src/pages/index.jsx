@@ -166,7 +166,7 @@ export default function DashboardPage() {
           {data?.generatedAt ? new Date(data.generatedAt).toLocaleString() : 'pending'}
         </span>
         <a
-          href="https://github.com/yourname/ai-stock-insights"
+          href="https://github.com/girish2408/ai-stock-insights"
           target="_blank"
           rel="noreferrer"
         >

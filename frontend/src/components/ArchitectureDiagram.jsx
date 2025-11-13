@@ -357,7 +357,7 @@ export default function ArchitectureDiagram() {
         <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
           For complete architecture documentation, see{' '}
           <a 
-            href="https://github.com/yourname/ai-stock-insights/blob/main/ARCHITECTURE.md" 
+            href="https://github.com/girish2408/ai-stock-insights/blob/main/ARCHITECTURE.md" 
             target="_blank" 
             rel="noreferrer"
             style={{ color: 'var(--accent-primary)', textDecoration: 'underline' }}
