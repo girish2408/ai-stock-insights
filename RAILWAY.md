@@ -101,11 +101,13 @@ This guide will walk you through deploying the AI Stock Insights Dashboard to Ra
    
    **Important:** `VITE_API_BASE` must be set BEFORE the first build, as Vite injects environment variables at build time.
 
-5. **Configure Build Settings (if needed):**
+5. **Configure Build Settings:**
    - Go to frontend service → **"Settings"** → **"Build"**
-   - If Railway doesn't detect the Dockerfile, set:
-     - **Dockerfile Path:** `frontend/Dockerfile`
+   - **Important:** If Railway shows `backend/Dockerfile` (from `railway.toml`), override it:
+     - Click on the Dockerfile path field
+     - Change it to: `frontend/Dockerfile`
      - **Root Directory:** Leave empty (or `/`)
+   - **Alternative:** Railway will auto-detect `frontend/railway.json` if it exists (we've created this file)
 
 6. **Generate Domain:**
    - Click on frontend service → **"Settings"** → **"Generate Domain"**
@@ -254,15 +256,24 @@ Railway automatically monitors your services. Check:
 
 ### Frontend Issues
 
+**Problem:** 502 Bad Gateway Error
+- **Solution:** This usually means frontend service is not deployed
+- Check Railway dashboard - do you see 3 services (PostgreSQL, Backend, Frontend)?
+- If frontend service is missing, deploy it (see Step 5 in this guide)
+- Verify you're accessing the **frontend** domain, not backend domain
+- See `RAILWAY_TROUBLESHOOTING.md` for detailed 502 error guide
+
 **Problem:** Frontend shows "Cannot connect to API"
 - **Solution:** Verify `VITE_API_BASE` is set correctly
 - Ensure backend domain is accessible
 - Check CORS settings (should be handled by backend)
+- Update `VITE_API_BASE` and redeploy frontend
 
 **Problem:** Frontend build fails
 - **Solution:** Check build logs in Railway
 - Verify all dependencies are in `package.json`
 - Ensure `VITE_API_BASE` is set before build
+- Verify Dockerfile path is `frontend/Dockerfile`
 
 ### Database Issues
 

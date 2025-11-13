@@ -1,19 +1,18 @@
 # Railway Configuration File
-# This file configures Railway deployment settings
+# This file is a fallback configuration.
+# For service-specific configurations, see:
+# - backend/railway.json (for backend service)
+# - frontend/railway.json (for frontend service)
+#
+# Railway will auto-detect the correct Dockerfile per service:
+# - Backend service: backend/Dockerfile
+# - Frontend service: frontend/Dockerfile
 
-[build]
-builder = "DOCKERFILE"
-dockerfilePath = "backend/Dockerfile"
+# If Railway doesn't auto-detect, you can set per-service in the dashboard:
+# - Backend: Settings → Build → Dockerfile Path: backend/Dockerfile
+# - Frontend: Settings → Build → Dockerfile Path: frontend/Dockerfile
 
 [deploy]
-startCommand = "pnpm start"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
-
-# Health check configuration
-[healthcheck]
-path = "/health"
-interval = 30
-timeout = 10
-retries = 3
 
