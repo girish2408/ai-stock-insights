@@ -23,10 +23,16 @@ RUN pnpm build
 
 FROM nginx:1.25-alpine AS runner
 
+# Railway sets PORT automatically, default to 80 if not set
+ENV PORT=80
+
 COPY --from=builder /app/frontend/dist /usr/share/nginx/html
-COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy nginx config template that uses PORT env var
+# nginx's docker-entrypoint.sh will automatically substitute ${PORT} at runtime
+COPY frontend/nginx.conf.template /etc/nginx/templates/default.conf.template
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/docker-entrypoint.sh", "nginx", "-g", "daemon off;"]
 
