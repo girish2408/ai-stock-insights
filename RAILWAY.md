@@ -75,7 +75,9 @@ This guide will walk you through deploying the AI Stock Insights Dashboard to Ra
    NODE_ENV=production
    ```
 
-   **Important:** Use `${{Postgres.DATABASE_URL}}` to reference the PostgreSQL service's DATABASE_URL automatically.
+   **Important:** 
+   - Use `${{Postgres.DATABASE_URL}}` to reference the PostgreSQL service's DATABASE_URL automatically.
+   - **CRITICAL:** Set `NODE_ENV=production` - this ensures Railway's DATABASE_URL is used correctly without modification.
 
 6. **Generate Domain:**
    - Click on backend service → **"Settings"** → **"Generate Domain"**
@@ -237,6 +239,13 @@ Railway automatically monitors your services. Check:
 - **Solution:** Verify `DATABASE_URL` uses `${{Postgres.DATABASE_URL}}`
 - Check PostgreSQL service is running
 - Verify database credentials
+
+**Problem:** `SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string`
+- **Solution:** This error occurs when the database connection code modifies Railway's DATABASE_URL incorrectly
+- **Fix:** Ensure `NODE_ENV=production` is set in your backend service environment variables
+- The code automatically detects Railway (via `NODE_ENV=production` or Railway environment variables) and uses DATABASE_URL as-is
+- If the error persists, verify `DATABASE_URL` is set correctly: `${{Postgres.DATABASE_URL}}`
+- Check Railway logs to see the actual DATABASE_URL being used
 
 **Problem:** API calls fail
 - **Solution:** Verify API keys are set correctly

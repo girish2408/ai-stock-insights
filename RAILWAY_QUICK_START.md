@@ -73,6 +73,8 @@ TRACKED_SYMBOLS=AAPL,MSFT,GOOGL
 NODE_ENV=production
 ```
 
+**⚠️ Important:** `NODE_ENV=production` is required to ensure Railway's DATABASE_URL is used correctly.
+
 ### Frontend Variables
 ```
 VITE_API_BASE=https://your-backend.railway.app/api

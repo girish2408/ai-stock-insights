@@ -5,32 +5,42 @@ let pool = null;
 
 export function getPool() {
   if (!pool) {
-    const { DATABASE_URL, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD } = process.env;
+    const { DATABASE_URL, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, NODE_ENV } = process.env;
     
     if (DATABASE_URL) {
-      // Parse DATABASE_URL and fix user if it's 'postgres' but doesn't exist
-      try {
-        const url = new URL(DATABASE_URL);
-        if (url.username === 'postgres') {
-          // Replace with current system user for macOS Homebrew PostgreSQL
-          const currentUser = process.env.USER || 'postgres';
-          url.username = currentUser;
-          url.password = ''; // macOS Homebrew PostgreSQL usually doesn't need password
-          pool = new Pool({ connectionString: url.toString() });
-        } else {
+      // In production (Railway, etc.), use DATABASE_URL as-is
+      // In local development, check if we need to fix macOS Homebrew PostgreSQL
+      const isProduction = NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID;
+      
+      if (isProduction) {
+        // Production: Use DATABASE_URL as-is (Railway provides complete connection string)
+        pool = new Pool({ connectionString: DATABASE_URL });
+      } else {
+        // Local development: Try to fix macOS Homebrew PostgreSQL issues
+        try {
+          const url = new URL(DATABASE_URL);
+          // Only modify if password is empty and username is 'postgres' (macOS Homebrew case)
+          if (url.username === 'postgres' && (!url.password || url.password === '')) {
+            const currentUser = process.env.USER || 'postgres';
+            url.username = currentUser;
+            url.password = '';
+            pool = new Pool({ connectionString: url.toString() });
+          } else {
+            // Use DATABASE_URL as-is if it has a password or different username
+            pool = new Pool({ connectionString: DATABASE_URL });
+          }
+        } catch (err) {
+          // If URL parsing fails, try as-is
           pool = new Pool({ connectionString: DATABASE_URL });
         }
-      } catch (err) {
-        // If URL parsing fails, try as-is
-        pool = new Pool({ connectionString: DATABASE_URL });
       }
     } else if (POSTGRES_HOST) {
-      const currentUser = process.env.USER || POSTGRES_USER || 'postgres';
+      // Use individual connection parameters
       pool = new Pool({
         host: POSTGRES_HOST,
         port: parseInt(POSTGRES_PORT || '5432'),
         database: POSTGRES_DB || 'ai_stock_insights',
-        user: currentUser,
+        user: POSTGRES_USER || 'postgres',
         password: POSTGRES_PASSWORD || ''
       });
     }
