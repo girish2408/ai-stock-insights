@@ -45,7 +45,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const { PORT = 4000 } = process.env;
+// Railway sets PORT automatically, fallback to 4000 for local dev
+const PORT = process.env.PORT || 4000;
 
 async function connectToDatabase() {
   try {
@@ -68,8 +69,10 @@ app.use('/api/ratings', ratingsRouter);
 app.use('/api/news', newsRouter);
 app.use('/api/stock', stockReportRouter);
 
-app.listen(PORT, () => {
-  console.log(`Backend listening on port ${PORT}`);
+// Bind to 0.0.0.0 to allow Railway to route traffic
+// Railway requires binding to 0.0.0.0, not just listening on a port
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Backend listening on 0.0.0.0:${PORT}`);
 });
 
 cron.schedule('0 6 * * *', async () => {
