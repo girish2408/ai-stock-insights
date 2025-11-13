@@ -48,6 +48,10 @@ app.use(express.json());
 // Railway sets PORT automatically, fallback to 4000 for local dev
 const PORT = process.env.PORT || 4000;
 
+// Log port information for debugging
+console.log(`[Server] PORT from environment: ${process.env.PORT || 'NOT SET (using default 4000)'}`);
+console.log(`[Server] Using PORT: ${PORT}`);
+
 async function connectToDatabase() {
   try {
     await initDatabase();
