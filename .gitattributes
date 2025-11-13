@@ -1,0 +1,11 @@
+# Ensure .env files are never committed
+*.env filter=git-crypt diff=git-crypt
+*.env.* filter=git-crypt diff=git-crypt
+backend/.env filter=git-crypt diff=git-crypt
+frontend/.env filter=git-crypt diff=git-crypt
+
+# Prevent accidental commits of sensitive files
+*secret* linguist-vendored
+*key* linguist-vendored
+*password* linguist-vendored
+

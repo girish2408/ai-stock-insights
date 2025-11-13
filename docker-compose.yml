@@ -1,0 +1,44 @@
+version: '3.9'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: stock-backend
+    env_file:
+      - backend/.env
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/ai_stock_insights
+      - PORT=4000
+    ports:
+      - '4000:4000'
+    depends_on:
+      - postgres
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: stock-frontend
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: stock-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=ai_stock_insights
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+volumes:
+  postgres-data:
+
